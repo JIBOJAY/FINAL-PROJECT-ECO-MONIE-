@@ -1,3 +1,4 @@
+// App initiallization
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
@@ -12,6 +13,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Middleware configuration
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));

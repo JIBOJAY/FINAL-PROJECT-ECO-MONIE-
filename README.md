@@ -72,11 +72,12 @@ User Management:
 Create: Users can register and create an account.
 Read: Display a list of Users (admin only), with search and filter options.
 Update: Users can update their profile information.
-Delete: Implement a feature for Users to delete their accounts.
+Delete: Implement a feature for Admin to delete users accounts.
+
 Collector Management:
 
 Create: Admin can add new Collectors, including their plans.
-Read: Display a list of Collectors with their specialization and availability.
+Read: Display a list of Collectors with their services and availability.
 Update: Allow Collectors or admin to update plans or profile information.
 Delete: Implement a feature to deactivate or delete Collector's profiles.
 Choosing plan:
