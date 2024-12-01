@@ -1,0 +1,41 @@
+<!-- public/schedule.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schedule Plan - Ecomonie</title>
+</head>
+<body>
+  <h1>Schedule a Plan</h1>
+  <form id="schedule-form">
+    <label for="collectorId">Collector ID:</label>
+    <input type="number" id="collectorId" name="collectorId" required><br><br>
+    <label for="date">Date:</label>
+    <input type="date" id="date" name="date" required><br><br>
+    <label for="time">Time:</label>
+    <input type="time" id="time" name="time" required><br><br>
+    <button type="submit">Schedule</button>
+  </form>
+  <script>
+    document.getElementById('schedule-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const token = localStorage.getItem('token');
+      const response = await fetch('/schedule', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          collectorId: document.getElementById('collectorId').value,
+          date: document.getElementById('date').value,
+          time: document.getElementById('time').value
+        })
+      });
+      const result = await response.json();
+      alert(result.message);
+    });
+  </script>
+</body>
+</html>

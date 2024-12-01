@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Plans</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f7fc;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 30px;
+      color: #007bff;
+    }
+
+    table {
+      width: 90%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: center;
+    }
+
+    table th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    table tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    table td {
+      font-size: 14px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 10px;
+      background-color: #343a40;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>All Scheduled Plans</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Plan ID</th>
+        <th>User</th>
+        <th>Collector ID</th>
+        <th>Date</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody id="plans-table">
+    </tbody>
+  </table>
+
+  <footer>
+    <p>&copy; 2024 TeleMed. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    // Fetch all plans
+    fetch('/admin/plans')
+      .then((res) => res.json())
+      .then((plans) => {
+        const table = document.getElementById('plans-table');
+        plans.forEach((plan) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${plan.id}</td>
+            <td>${plan.user_name}</td>
+            <td>${plan.collector_id}</td>
+            <td>${plan.date}</td>
+            <td>${plan.time}</td>
+          `;
+          table.appendChild(row);
+        });
+      });
+  </script>
+</body>
+</html>

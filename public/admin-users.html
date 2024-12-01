@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Users</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #444;
+    }
+
+    form {
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #28a745;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    table {
+      width: 90%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: center;
+    }
+
+    table th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    table tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    table td button {
+      margin: 0 5px;
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+
+    table td button:hover {
+      opacity: 0.9;
+    }
+
+    .delete-button {
+      background-color: #dc3545;
+    }
+
+    .delete-button:hover {
+      background-color: #c82333;
+    }
+
+    .update-button {
+      background-color: #ffc107;
+    }
+
+    .update-button:hover {
+      background-color: #e0a800;
+    }
+  </style>
+</head>
+<body>
+  <h1>Manage Users</h1>
+  <form id="add-user-form">
+    <h2>Add User</h2>
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+    <button type="submit">Add User</button>
+  </form>
+
+  <h2>All Users</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Coins</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="users-table">
+    </tbody>
+  </table>
+
+  <script>
+    // Fetch all users
+    const fetchUsers = () => {
+      fetch('/admin/users')
+        .then((res) => res.json())
+        .then((users) => {
+          const table = document.getElementById('users-table');
+          table.innerHTML = ''; // Clear table
+          users.forEach((user) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${user.id}</td>
+              <td>${user.name}</td>
+              <td>${user.email}</td>
+              <td>${user.coins}</td>
+              <td>
+                <button onclick="deleteUser(${user.id})">Delete</button>
+                <button onclick="updateCoins(${user.id})">Update Coins</button>
+              </td>`;
+            table.appendChild(row);
+          });
+        });
+    };
+
+    // Add user
+    document.getElementById('add-user-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      fetch('/admin/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password }),
+      }).then((res) => {
+        if (res.ok) {
+          alert('User added successfully!');
+          fetchUsers(); // Refresh user list
+        }
+      });
+    });
+
+    // Delete user
+    const deleteUser = (id) => {
+      fetch(`/admin/users/${id}`, { method: 'DELETE' }).then((res) => {
+        if (res.ok) {
+          alert('User deleted!');
+          fetchUsers();
+        }
+      });
+    };
+
+    // Update coins (example)
+    const updateCoins = (id) => {
+      const coins = prompt('Enter new coin value:');
+      fetch(`/admin/users/${id}/coins`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ coins }),
+      }).then((res) => {
+        if (res.ok) {
+          alert('Coins updated!');
+          fetchUsers();
+        }
+      });
+    };
+
+    // Initialize
+    fetchUsers();
+  </script>
+</body>
+</html>

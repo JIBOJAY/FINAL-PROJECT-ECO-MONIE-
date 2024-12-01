@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+      color: #007bff;
+    }
+
+    nav {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    nav a {
+      color: #007bff;
+      font-size: 16px;
+      text-decoration: none;
+      margin: 0 15px;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    section h2 {
+      color: #444;
+      margin-bottom: 15px;
+    }
+
+    section p {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+
+    section span {
+      font-weight: bold;
+      color: #28a745;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 10px;
+      background-color: #343a40;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Admin Dashboard</h1>
+  <nav>
+    <a href="/admin/manage-users">Manage Users</a> | 
+    <a href="/admin/view-plans">View Plans</a>
+  </nav>
+
+  <section>
+    <h2>Statistics</h2>
+    <p>Total Users: <span id="total-users">Loading...</span></p>
+    <p>Total Plans: <span id="total-plans">Loading...</span></p>
+  </section>
+
+  <footer>
+    <p>&copy; 2024 TeleMed. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    // Fetch statistics (example implementation)
+    fetch('/admin/users')
+      .then((res) => res.json())
+      .then((users) => {
+        document.getElementById('total-users').textContent = users.length;
+      });
+
+    fetch('/admin/plans')
+      .then((res) => res.json())
+      .then((plans) => {
+        document.getElementById('total-plans').textContent = plans.length;
+      });
+  </script>
+</body>
+</html>
